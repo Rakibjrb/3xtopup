@@ -1,32 +1,48 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
 import toast, { Toaster } from "react-hot-toast";
 import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { ImSpinner9 } from "react-icons/im";
-import Link from "next/link";
+import usePublicServer from "@/utils/hooks/server/usePublicServer";
 import "../sign-up/signup.css";
 
 export default function SinIn() {
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
+  const router = useRouter();
+  const axios = usePublicServer();
 
-  const handleSignIn = (e) => {
+  const handleSignIn = async (e) => {
     e.preventDefault();
 
-    const info = {
+    const logininfo = {
       email: e.target.email.value,
       password: e.target.password.value,
+      redirect: false,
     };
 
     setLoading(true);
 
-    console.log(info);
+    const res = await signIn("credentials", logininfo);
+    if (res.error) {
+      setLoading(false);
+      toast.error(res.error);
+      return;
+    }
+
+    const tokenResponse = await axios.post("/create-accessToken", logininfo);
+    const token = tokenResponse.data.accessToken;
+    sessionStorage.setItem("access-token", token);
 
     setLoading(false);
-    toast.success("Login successful");
+    toast.success("Login Success ...");
     e.target.email.value = "";
     e.target.password.value = "";
+    setTimeout(() => router.push("/dashboard"), 1500);
   };
 
   return (
