@@ -17,9 +17,9 @@ export default function Home() {
               <li>
                 <Link
                   href=""
-                  className="hover:text-[#ff42a5] transition-colors duration-300"
+                  className="hover:text-[#ff42a5] transition-colors duration-300 uppercase md:text-xl"
                 >
-                  About Us
+                  Diamonds
                 </Link>
               </li>
               <li className="text-white py-2 px-5 rounded-md flex gap-x-3 bg-[#ff42a6] hover:bg-gray-600 transition-colors duration-200">
@@ -49,13 +49,13 @@ export default function Home() {
               </ul>
               <div className="flex gap-x-3 md:gap-x-6">
                 <Link
-                  href={"/sign-up"}
+                  href={"/auth/sign-up"}
                   className="px-5 py-3 bg-[#ff42a5] rounded-full uppercase text-white hover:bg-gray-600 transition-colors duration-200"
                 >
                   Create Account
                 </Link>
                 <Link
-                  href={"/sign-in"}
+                  href={"/auth/sign-in"}
                   className="px-5 py-3 bg-[#3e9ee3] rounded-full uppercase text-white hover:bg-gray-600 transition-colors duration-200"
                 >
                   Sign In
