@@ -6,19 +6,24 @@ import { IoMdEye, IoMdEyeOff } from "react-icons/io";
 import { ImSpinner9 } from "react-icons/im";
 import Link from "next/link";
 import "./signup.css";
+import usePublicServer from "@/utils/hooks/server/usePublicServer";
+import { useRouter } from "next/navigation";
 
 export default function SignUp() {
   const [loading, setLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
+  const axios = usePublicServer();
+  const router = useRouter();
 
   const handleCreateAccount = (e) => {
     e.preventDefault();
+
+    const repassword = e.target.repassword.value;
 
     const info = {
       name: e.target.name.value,
       email: e.target.email.value,
       password: e.target.password.value,
-      repassword: e.target.repassword.value,
     };
 
     const regex = /^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W_]).{8,}$/;
@@ -32,21 +37,31 @@ export default function SignUp() {
       return;
     }
 
-    if (info.password !== info.repassword) {
+    if (info.password !== repassword) {
       toast.error("Re-type password doesn't matched");
       return;
     }
 
     setLoading(true);
-
-    console.log(info);
-
-    setLoading(false);
-    toast.success("Account creation successful");
-    e.target.name.value = "";
-    e.target.email.value = "";
-    e.target.password.value = "";
-    e.target.repassword.value = "";
+    axios
+      .post("/create-user", info)
+      .then((res) => {
+        if (res.data.message == "user registered on this email") {
+          setLoading(false);
+          return toast.error(res.data.message);
+        }
+        toast.success(res.data.message);
+        setLoading(false);
+        e.target.name.value = "";
+        e.target.email.value = "";
+        e.target.password.value = "";
+        e.target.repassword.value = "";
+        router.push("/auth/sign-in");
+      })
+      .catch((e) => {
+        setLoading(false);
+        toast.error("something went wrong");
+      });
   };
 
   return (
