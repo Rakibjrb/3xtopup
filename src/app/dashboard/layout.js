@@ -6,7 +6,7 @@ export default function layout({ children }) {
       <div>
         <DashboardNav />
       </div>
-      <div>{children}</div>
+      <div className="w-full">{children}</div>
     </div>
   );
 }
