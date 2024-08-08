@@ -26,7 +26,7 @@ export default function DashboardNav() {
       <div
         className={`fixed top-0 ${
           showMenu ? "left-0" : "-left-[9999px]"
-        } z-20 w-[300px] bg-white min-h-screen p-5 transition-all duration-500`}
+        } z-20 w-[300px] bg-slate-200 min-h-screen p-5 transition-all duration-500`}
       >
         <div className="flex justify-between">
           <h2 className="font-bold text-3xl">
