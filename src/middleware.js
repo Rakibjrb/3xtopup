@@ -11,7 +11,9 @@ export function middleware(request) {
     request.nextUrl.pathname == "/auth/sign-up";
   if (loggedUserNotAccessPaths) {
     if (loginToken) {
-      return NextResponse.redirect(new URL("/dashboard", request.url));
+      return NextResponse.redirect(
+        new URL("/dashboard/buy-diamonds", request.url)
+      );
     }
   } else {
     if (!loginToken) {
