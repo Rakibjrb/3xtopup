@@ -94,6 +94,37 @@ export default function BuyDiamondsUI() {
         </p>
       )}
       {bonusMessage && <p className="text-xl mt-4">{bonusMessage}</p>}
+
+      <div className="mt-8">
+        <form className="flex flex-col">
+          <label htmlFor="uid" className="text-xl">
+            Enter Player ID/UID
+          </label>
+          <input
+            className="py-3 px-2 rounded-lg outline-none"
+            type="number"
+            placeholder="write here ..."
+            required
+          />
+
+          <button
+            disabled={topupAmount ? false : true}
+            className={` ${
+              topupAmount ? "bg-[#6c88d4]" : "bg-[#e0e0e0] text-black"
+            } w-1/2 py-3 px-5  rounded-lg text-white text-xl mt-4`}
+          >
+            Add to Cart
+          </button>
+          <button
+            disabled={topupAmount ? false : true}
+            className={`${
+              topupAmount ? "bg-[#ff42a5]" : "bg-[#e0e0e0]"
+            } w-full py-3 px-5 rounded-lg text-xl mt-4`}
+          >
+            Order Now
+          </button>
+        </form>
+      </div>
     </div>
   );
 }

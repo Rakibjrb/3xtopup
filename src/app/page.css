@@ -1,9 +1,3 @@
-.color1 {
-  color: #ff42a5;
-}
-
-/* banner section styles */
-
 .banner {
   background: linear-gradient(#02020235, #020202c2),
     url("../assets/images/banner.jpg");

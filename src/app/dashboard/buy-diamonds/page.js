@@ -1,6 +1,7 @@
 import Image from "next/image";
 import buyDiamondsBanner from "@/assets/images/Diamond-banner.webp";
 import BuyDiamondsUI from "@/components/ui/buy-diamonds/BuyDiamondsUI";
+import Description from "@/components/ui/buy-diamonds/Description";
 
 export default function BuyDiamonds() {
   return (
@@ -23,6 +24,7 @@ export default function BuyDiamonds() {
           <BuyDiamondsUI />
         </div>
       </div>
+      <Description />
     </div>
   );
 }
