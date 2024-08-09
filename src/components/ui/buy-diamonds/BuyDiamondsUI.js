@@ -52,7 +52,7 @@ export default function BuyDiamondsUI() {
       <h2 className="font-bold text-2xl">
         Choose : {topupAmount && topupAmount + " Diamonds"}
       </h2>
-      <div className="grid grid-cols-3 gap-3 mt-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 mt-4">
         {diamondsOffers.map((offer, index) => (
           <button
             key={index + "offersfjkaslf"}
@@ -89,7 +89,7 @@ export default function BuyDiamondsUI() {
         ))}
       </div>
       {topupAmount && (
-        <p className="text-xl mt-4">
+        <p className="text-xl mt-4 font-extrabold">
           {topupAmount} Diamonds {price} TK
         </p>
       )}

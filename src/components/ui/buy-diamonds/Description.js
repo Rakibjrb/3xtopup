@@ -10,7 +10,7 @@ export default function Description() {
       <ul className="pl-10 mt-4">
         <li className="list-decimal">Diamond প্যাকেজ নির্বাচন করুন।</li>
         <li className="list-decimal">আপনার Player ID/UID দিন।</li>
-        <li className="list-decimal">Buy Now বাটনে ক্লিক করুন।</li>
+        <li className="list-decimal">Order Now বাটনে ক্লিক করুন।</li>
         <li className="list-decimal">
           Billing Details এ আপনার Phone Number দিন।
         </li>
