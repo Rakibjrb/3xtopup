@@ -3,10 +3,14 @@
 import { useEffect, useState } from "react";
 import PaymentMethod from "./PaymentMethod";
 import moment from "moment";
+import useSecureServer from "@/utils/hooks/server/useSecureServer";
+import { ImSpinner2 } from "react-icons/im";
 
 export default function CheckOut() {
+  const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("BKash");
+  const axiosSecure = useSecureServer();
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
@@ -21,7 +25,20 @@ export default function CheckOut() {
       status: "pending",
       date: moment().format("DD/MM/YYYY"),
     };
-    console.log(orderInfo);
+
+    setLoading(true);
+
+    axiosSecure
+      .post("/place-order", orderInfo)
+      .then((res) => {
+        location.reload();
+        console.log(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -96,8 +113,8 @@ export default function CheckOut() {
             paymentMethod={paymentMethod}
             setPaymentMethod={setPaymentMethod}
           />
-          <button className="mt-3 py-3 text-2xl font-bold uppercase bg-blue-400 hover:bg-slate-300 transition-all duration-200 w-full rounded-lg">
-            Place Order
+          <button className="flex justify-center text-center mt-3 py-3 text-2xl font-bold uppercase bg-blue-400 hover:bg-slate-300 transition-all duration-200 w-full rounded-lg">
+            {loading ? <ImSpinner2 className="text-3xl" /> : "Place Order"}
           </button>
         </div>
       </div>
