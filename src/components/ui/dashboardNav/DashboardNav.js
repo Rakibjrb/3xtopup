@@ -6,14 +6,43 @@ import { useState } from "react";
 import { usePathname } from "next/navigation";
 import { dashboardLinks } from "@/utils/dashboardLinks";
 import Link from "next/link";
+import { signOut } from "next-auth/react";
 
 export default function DashboardNav() {
   const [showMenu, setShowMenu] = useState(false);
+  const [logOutModal, setLogOutModal] = useState(false);
   const path = usePathname();
   const exactPath = path.split("/");
 
+  const logOutHandler = () => {
+    sessionStorage.removeItem("access-token");
+    signOut({ callbackUrl: "/" });
+  };
+
   return (
     <>
+      <div
+        className={`${
+          !logOutModal && "hidden"
+        } bg-slate-200 rounded-lg w-[320px] p-3 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30`}
+      >
+        <h2 className="text-center text-xl uppercase">Are you sure?</h2>
+        <div className="mt-3 flex gap-2">
+          <button
+            onClick={() => setLogOutModal(false)}
+            className="flex-1 text-sm py-2 px-4 bg-slate-300 hover:bg-white transition-all duration-300 rounded-lg uppercase"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={logOutHandler}
+            className="flex-1 text-sm py-2 px-4 bg-red-400 hover:bg-white transition-all duration-300 rounded-lg uppercase"
+          >
+            Log Out
+          </button>
+        </div>
+      </div>
+
       <div className="p-4 lg:hidden z-10 flex justify-between">
         <button onClick={() => setShowMenu(true)}>
           <FaBarsStaggered className="text-3xl" />
@@ -23,6 +52,7 @@ export default function DashboardNav() {
           {exactPath[exactPath.length - 1]}
         </h2>
       </div>
+      {/* mobile devices dashboard side bar */}
       <div
         className={`fixed top-0 ${
           showMenu ? "left-0" : "-left-[9999px]"
@@ -51,6 +81,16 @@ export default function DashboardNav() {
               </Link>
             </li>
           ))}
+          <li>
+            <button
+              onClick={() => {
+                setLogOutModal(true);
+              }}
+              className={`w-full text-left px-2 py-3 hover:bg-black hover:text-white uppercase rounded-md transition-colors duration-200`}
+            >
+              Log Out
+            </button>
+          </li>
         </ul>
       </div>
       {/* large device side bar */}
@@ -75,6 +115,16 @@ export default function DashboardNav() {
               </Link>
             </li>
           ))}
+          <li>
+            <button
+              onClick={() => {
+                setLogOutModal(true);
+              }}
+              className={`w-full text-left px-2 py-3 hover:bg-black hover:text-white uppercase rounded-md transition-colors duration-200`}
+            >
+              Log Out
+            </button>
+          </li>
         </ul>
       </div>
     </>

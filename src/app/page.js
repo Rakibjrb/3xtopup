@@ -36,7 +36,7 @@ export default function Home() {
 
           <div className="min-h-[calc(100vh-140px)] md:min-h-[calc(100vh-110px)] flex justify-between items-center px-3 xl:px-0">
             <div className="lg:w-3/4">
-              <h1 className="styled-text text-6xl  md:text-7xl font-extrabold text-center md:text-left">
+              <h1 className="styled-text text-6xl  md:text-7xl font-extrabold text-left">
                 DIAMOND TOP UP
               </h1>
               <h2 className="uppercase text-4xl font-bold">

@@ -42,7 +42,7 @@ export default function SinIn() {
     toast.success("Login Success ...");
     e.target.email.value = "";
     e.target.password.value = "";
-    setTimeout(() => router.push("/dashboard"), 1500);
+    setTimeout(() => router.push("/dashboard/buy-diamonds"), 1500);
   };
 
   return (

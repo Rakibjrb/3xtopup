@@ -13,11 +13,12 @@ export default function BuyDiamonds() {
             src={buyDiamondsBanner}
             width={500}
             height={500}
+            priority
             alt="buy diamnod image"
           />
         </div>
         <div className="mt-6 lg:mt-0 flex-1">
-          <h1 className="text-left styled-text text-4xl  md:text-6xl lg:text-5xl xl:text-6xl font-extrabold md:text-left">
+          <h1 className="text-left styled-text text-4xl  md:text-6xl lg:text-5xl font-extrabold md:text-left">
             Diamond Top Up BD
           </h1>
 

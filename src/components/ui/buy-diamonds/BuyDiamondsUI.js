@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 
 const diamondsOffers = [
   { topup: 25, price: 25 },
@@ -46,6 +47,19 @@ export default function BuyDiamondsUI() {
   const [topupAmount, setTopupAmount] = useState(null);
   const [price, setPrice] = useState(null);
   const [bonusMessage, setBonusMessage] = useState(null);
+  const router = useRouter();
+  const path = usePathname();
+
+  const handleOrder = (e) => {
+    e.preventDefault();
+    const topUp = {
+      diamond: topupAmount,
+      price,
+      uid: e.target.uid.value,
+    };
+    sessionStorage.setItem("order-info", JSON.stringify(topUp));
+    router.push(`${path}/checkout`);
+  };
 
   return (
     <div className="mt-6">
@@ -96,25 +110,25 @@ export default function BuyDiamondsUI() {
       {bonusMessage && <p className="text-xl mt-4">{bonusMessage}</p>}
 
       <div className="mt-8">
-        <form className="flex flex-col">
+        <form onSubmit={handleOrder} className="flex flex-col">
           <label htmlFor="uid" className="text-xl">
             Enter Player ID/UID
           </label>
           <input
+            name="uid"
             className="py-3 px-2 rounded-lg outline-none"
             type="number"
-            placeholder="write here ..."
+            placeholder="1618472347"
             required
           />
 
-          <button
-            disabled={topupAmount ? false : true}
+          <div
             className={` ${
               topupAmount ? "bg-[#6c88d4]" : "bg-[#e0e0e0] text-black"
-            } w-1/2 py-3 px-5  rounded-lg text-white text-xl mt-4`}
+            } w-1/2 py-3 px-5  rounded-lg text-white text-xl mt-4 text-center cursor-pointer`}
           >
             Add to Cart
-          </button>
+          </div>
           <button
             disabled={topupAmount ? false : true}
             className={`${
