@@ -34,7 +34,6 @@ export default function CheckOut() {
     axiosSecure
       .post("/place-order", orderInfo)
       .then((res) => {
-        console.log(res.data);
         setLoading(false);
         (e.target.name.value = ""),
           (e.target.phone.value = ""),
