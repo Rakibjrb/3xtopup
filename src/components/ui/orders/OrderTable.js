@@ -1,6 +1,4 @@
-export default function OrderTable() {
-  let status = "pending";
-
+export default function OrderTable({ orders }) {
   return (
     <table className="w-full">
       <thead>
@@ -13,23 +11,25 @@ export default function OrderTable() {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td className="py-2 text-sm md:text-xl">1</td>
-          <td className="py-2 text-sm md:text-xl">150 TK</td>
-          <td className="py-2 text-sm md:text-xl">08/08/2024</td>
-          <td className="py-2 text-sm md:text-xl">Rocket</td>
-          <td>
-            <div
-              className={`${
-                status === "pending"
-                  ? "bg-red-400 py-1 px-3 rounded-md"
-                  : "bg-green-400 py-1 px-3 rounded-md"
-              } py-2 text-sm md:text-xl w-[80px] md:w-[100px]`}
-            >
-              Pending
-            </div>
-          </td>
-        </tr>
+        {orders?.map((order, i) => (
+          <tr key={order?._id}>
+            <td className="py-2 text-sm md:text-xl">{i + 1}</td>
+            <td className="py-2 text-sm md:text-xl">{order?.price} TK</td>
+            <td className="py-2 text-sm md:text-xl">{order?.date}</td>
+            <td className="py-2 text-sm md:text-xl">{order?.paymentMethod}</td>
+            <td>
+              <div
+                className={`${
+                  order?.status === "pending"
+                    ? "bg-red-400 py-1 px-3 rounded-md"
+                    : "bg-green-400 py-1 px-3 rounded-md"
+                } py-2 text-sm md:text-xl w-[90px] md:w-[130px] text-center`}
+              >
+                {order?.status}
+              </div>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </table>
   );

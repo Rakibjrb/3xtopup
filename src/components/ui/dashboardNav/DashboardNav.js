@@ -81,6 +81,24 @@ export default function DashboardNav() {
           </button>
         </div>
 
+        <div className="mt-8 space-y-2">
+          <p className="uppercase text-xs">ID - {user?._id}</p>
+          <h3>{user?.name}</h3>
+          <h3>{user?.email}</h3>
+          <h3>
+            {user?.phone === "none" ? (
+              <Link
+                href={"/dashboard/profile"}
+                className="text-rose-400 hover:text-rose-600"
+              >
+                Add Phone
+              </Link>
+            ) : (
+              user?.phone
+            )}
+          </h3>
+        </div>
+
         <ul className="mt-6">
           {dashboardLinks.map((link) => (
             <li key={link.name}>

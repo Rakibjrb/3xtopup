@@ -2,8 +2,8 @@ import { NextResponse } from "next/server";
 
 export function middleware(request) {
   const loginToken = request.cookies?.get(
-    // "__Secure-next-auth.session-token"
-    "next-auth.session-token"
+    "__Secure-next-auth.session-token"
+    // "next-auth.session-token"
   )?.value;
 
   const loggedUserNotAccessPaths =
