@@ -2,15 +2,18 @@
 
 import { IoMdClose } from "react-icons/io";
 import { FaBarsStaggered } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { dashboardLinks } from "@/utils/dashboardLinks";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import useSecureServer from "@/utils/hooks/server/useSecureServer";
 
 export default function DashboardNav() {
+  const [user, setUser] = useState(null);
   const [showMenu, setShowMenu] = useState(false);
   const [logOutModal, setLogOutModal] = useState(false);
+  const axios = useSecureServer();
   const path = usePathname();
   const exactPath = path.split("/");
 
@@ -18,6 +21,17 @@ export default function DashboardNav() {
     sessionStorage.removeItem("access-token");
     signOut({ callbackUrl: "/" });
   };
+
+  useEffect(() => {
+    axios
+      .get("/user-info")
+      .then((res) => {
+        setUser(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
@@ -100,6 +114,24 @@ export default function DashboardNav() {
         <h2 className="font-bold text-3xl">
           <span className="text-[#ff42a5]">3X</span>TOPUP
         </h2>
+
+        <div className="mt-8 space-y-2">
+          <p className="uppercase text-xs">ID - {user?._id}</p>
+          <h3>{user?.name}</h3>
+          <h3>{user?.email}</h3>
+          <h3>
+            {user?.phone === "none" ? (
+              <Link
+                href={"/dashboard/profile"}
+                className="text-rose-400 hover:text-rose-600"
+              >
+                Add Phone
+              </Link>
+            ) : (
+              user?.phone
+            )}
+          </h3>
+        </div>
 
         <ul className="mt-6">
           {dashboardLinks.map((link) => (

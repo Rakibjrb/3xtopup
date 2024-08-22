@@ -5,12 +5,15 @@ import PaymentMethod from "./PaymentMethod";
 import moment from "moment";
 import useSecureServer from "@/utils/hooks/server/useSecureServer";
 import { ImSpinner2 } from "react-icons/im";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function CheckOut() {
   const [loading, setLoading] = useState(false);
   const [info, setInfo] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState("BKash");
   const axiosSecure = useSecureServer();
+  const router = useRouter();
 
   const handlePlaceOrder = (e) => {
     e.preventDefault();
@@ -31,9 +34,20 @@ export default function CheckOut() {
     axiosSecure
       .post("/place-order", orderInfo)
       .then((res) => {
-        location.reload();
         console.log(res.data);
         setLoading(false);
+        (e.target.name.value = ""),
+          (e.target.phone.value = ""),
+          (e.target.email.value = ""),
+          (e.target.paidNumber.value = ""),
+          (e.target.paidTRXID.value = ""),
+          toast.success("Order Successfully Placed ...");
+        toast("Please wait for confirmation and complete the order", {
+          duration: 8000,
+        });
+
+        router.push("/dashboard/orders");
+        sessionStorage.removeItem("order-info");
       })
       .catch((err) => {
         console.log(err);
