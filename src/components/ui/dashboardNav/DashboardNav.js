@@ -3,8 +3,11 @@
 import { IoMdClose } from "react-icons/io";
 import { FaBarsStaggered } from "react-icons/fa6";
 import { useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
-import { dashboardLinks } from "@/utils/dashboardLinks";
+import { usePathname, useRouter } from "next/navigation";
+import {
+  dashboardUserLinks,
+  dashboardAdminLinks,
+} from "@/utils/dashboardLinks";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
 import useSecureServer from "@/utils/hooks/server/useSecureServer";
@@ -15,6 +18,7 @@ export default function DashboardNav() {
   const [logOutModal, setLogOutModal] = useState(false);
   const axios = useSecureServer();
   const path = usePathname();
+  const router = useRouter();
   const exactPath = path.split("/");
 
   const logOutHandler = () => {
@@ -22,11 +26,44 @@ export default function DashboardNav() {
     signOut({ callbackUrl: "/" });
   };
 
+  //users dashboard links
+  const userLinks = dashboardUserLinks.map((link) => (
+    <li key={link.name}>
+      <Link href={link.path}>
+        <div
+          className={`${
+            path === link.path && "bg-black text-white"
+          } px-2 py-3 hover:bg-black hover:text-white uppercase rounded-md transition-colors duration-200`}
+        >
+          {link.name}
+        </div>
+      </Link>
+    </li>
+  ));
+
+  //admin panel links
+  const adminLinks = dashboardAdminLinks.map((link) => (
+    <li key={link.name}>
+      <Link href={link.path}>
+        <div
+          className={`${
+            path === link.path && "bg-black text-white"
+          } px-2 py-3 hover:bg-black hover:text-white uppercase rounded-md transition-colors duration-200`}
+        >
+          {link.name}
+        </div>
+      </Link>
+    </li>
+  ));
+
   useEffect(() => {
     axios
       .get("/user-info")
       .then((res) => {
         setUser(res.data);
+        if (res.data.role === "admin") {
+          router.push("/dashboard/admin");
+        }
       })
       .catch((err) => {
         console.log(err);
@@ -100,19 +137,7 @@ export default function DashboardNav() {
         </div>
 
         <ul className="mt-6">
-          {dashboardLinks.map((link) => (
-            <li key={link.name}>
-              <Link href={link.path}>
-                <div
-                  className={`${
-                    path === link.path && "bg-black text-white"
-                  } px-2 py-3 hover:bg-black hover:text-white uppercase rounded-md transition-colors duration-200`}
-                >
-                  {link.name}
-                </div>
-              </Link>
-            </li>
-          ))}
+          {user?.role === "user" ? userLinks : adminLinks}
           <li>
             <button
               onClick={() => {
@@ -152,19 +177,7 @@ export default function DashboardNav() {
         </div>
 
         <ul className="mt-6">
-          {dashboardLinks.map((link) => (
-            <li key={link.name}>
-              <Link href={link.path}>
-                <div
-                  className={`${
-                    path === link.path && "bg-black text-white"
-                  } px-2 py-3 hover:bg-black hover:text-white uppercase rounded-md transition-colors duration-200`}
-                >
-                  {link.name}
-                </div>
-              </Link>
-            </li>
-          ))}
+          {user?.role === "user" ? userLinks : adminLinks}
           <li>
             <button
               onClick={() => {
