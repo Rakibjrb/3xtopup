@@ -1,11 +1,39 @@
 "use client";
 
+import useSecureServer from "@/utils/hooks/server/useSecureServer";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { ImSpinner9 } from "react-icons/im";
 
 export default function SetDiamondPrice({ diamonds }) {
+  const [loading, setLoading] = useState(false);
+  const [offerId, setOfferId] = useState(null);
   const [topupAmount, setTopupAmount] = useState(null);
   const [price, setPrice] = useState(null);
   const [bonusMessage, setBonusMessage] = useState(null);
+  const axios = useSecureServer();
+
+  const handleDiamondPriceUpdate = (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const newData = {
+      offerId,
+      topupAmount,
+      price,
+    };
+
+    axios
+      .post("/update-diamonds", newData)
+      .then((res) => {
+        setLoading(false);
+        toast.success("Update Successfull");
+      })
+      .catch((err) => {
+        setLoading(false);
+        toast.error("Update Error");
+        console.log(err);
+      });
+  };
 
   return (
     <div>
@@ -14,6 +42,7 @@ export default function SetDiamondPrice({ diamonds }) {
           <button
             key={offer._id}
             onClick={() => {
+              setOfferId(offer._id);
               setTopupAmount(offer.topup);
               setPrice(offer.price);
               setBonusMessage(offer.bonus === "none" ? null : offer.bonus);
@@ -36,6 +65,7 @@ export default function SetDiamondPrice({ diamonds }) {
       {bonusMessage && <p className="text-xl mt-4">{bonusMessage}</p>}
 
       <form
+        onSubmit={handleDiamondPriceUpdate}
         className={`mt-8 p-2 rounded-md shadow-2xl flex flex-col gap-y-4 max-w-sm ${
           topupAmount ? "" : "hidden"
         }`}
@@ -47,7 +77,7 @@ export default function SetDiamondPrice({ diamonds }) {
             placeholder="Diamonds"
             name="diamonds"
             className="w-full p-1 rounded-md outline-none"
-            value={topupAmount || 0}
+            value={topupAmount || ""}
             onChange={(e) => setTopupAmount(e.target.value)}
             required
           />
@@ -59,7 +89,7 @@ export default function SetDiamondPrice({ diamonds }) {
             placeholder="Price"
             name="price"
             className="w-full p-1 rounded-md outline-none"
-            value={price || 0}
+            value={price || ""}
             onChange={(e) => setPrice(e.target.value)}
             required
           />
@@ -67,9 +97,13 @@ export default function SetDiamondPrice({ diamonds }) {
 
         <button
           type="submit"
-          className="px-3 py-2 rounded-md bg-[#ff42a5] hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer"
+          className="flex justify-center px-3 py-2 rounded-md bg-[#ff42a5] hover:bg-black hover:text-white transition-colors duration-300 cursor-pointer"
         >
-          Update Now
+          {loading ? (
+            <ImSpinner9 className="text-xl animate-spin" />
+          ) : (
+            "Update Now"
+          )}
         </button>
       </form>
     </div>
