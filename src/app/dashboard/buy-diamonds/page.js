@@ -2,8 +2,11 @@ import Image from "next/image";
 import buyDiamondsBanner from "@/assets/images/Diamond-banner.webp";
 import BuyDiamondsUI from "@/components/ui/buy-diamonds/BuyDiamondsUI";
 import Description from "@/components/ui/buy-diamonds/Description";
+import { getDiamonds } from "@/utils/diamonds";
 
-export default function BuyDiamonds() {
+export default async function BuyDiamonds() {
+  const diamonds = await getDiamonds();
+
   return (
     <div className="p-3">
       <div className="lg:flex gap-8">
@@ -22,7 +25,7 @@ export default function BuyDiamonds() {
             Diamond Top Up BD
           </h1>
 
-          <BuyDiamondsUI />
+          <BuyDiamondsUI diamonds={diamonds} />
         </div>
       </div>
       <Description />
